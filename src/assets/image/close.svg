@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>关闭</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="竞媒比对-初始界面" transform="translate(-337.000000, -166.000000)">
+            <g id="说明" transform="translate(199.000000, 156.000000)">
+                <g id="关闭" transform="translate(138.000000, 10.000000)">
+                    <circle id="椭圆形" fill="#FFFFFF" cx="6" cy="6" r="6"></circle>
+                    <g transform="translate(4.000000, 4.000000)" id="形状结合" stroke="#666666" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M0.181818182,0.181818182 L3.81818182,3.81818182 M0.181818182,3.81818182 L3.81818182,0.181818182"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

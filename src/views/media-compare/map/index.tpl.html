@@ -1,0 +1,25 @@
+<div class="map">
+    <Overlay :show="isLoading" z-index=999>
+        <div class="wrapper">
+            <Loading size="24px" vertical >加载中...</Loading>
+        </div>
+    </Overlay>
+    <div class="map-search">
+        <div class="map-search-back">
+            <img src="../../../assets/image/left-arrow.svg" />
+        </div>
+        <div class="map-search-main">
+            <div class="map-search-left">
+                <span style="margin-right: .1rem;">{{citySelectInfo.cityName}}</span>
+                <img src="../../../assets/image/san.svg" />
+            </div>
+            <span class="map-search-border"></span>
+            <div class="map-search-test">{{search}}</div>
+        </div>
+    </div>
+    <div class="map-main">
+        <div class="map-content" id="container"></div>
+        <img class="map-center" v-show="true" src="../../../assets/image/mapCenter.svg" />
+        <img class="map-back" src="../../../assets/image/centerBack.svg" @click="centerBack()" />
+    </div>
+</div>

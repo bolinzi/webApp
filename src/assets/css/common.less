@@ -1,0 +1,227 @@
+// 隐藏地图logo
+.anchorBL {
+    display: none;
+}
+// .BMapLabel {
+// height: .44rem;
+// }
+.angle {
+    position: absolute;
+    bottom: -.2rem;
+    left: 50%;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: 5px solid;
+    border-color: #fff transparent transparent;
+    opacity: .8;
+    transform: translate(-50%, 0);
+}
+// 地图区域标注样式
+.region-info {
+    line-height: .35rem;
+    padding-right: .4rem;
+    padding-left: .4rem;
+    border-radius: .1rem;
+    font-size: .24rem;
+    color: #000;
+    background: #fff;
+    .region-title {
+        line-height: .5rem;
+        font-weight: 600;
+        font-size: .28rem;
+    }
+}
+.circle {
+    position: absolute;
+    border: .02rem solid @red;
+    border-radius: 50%;
+    background: rgba(235, 73, 68, .3);
+}
+.van-dialog {
+    border-radius: .12rem !important;
+}
+.van-button--normal {
+    font-size: .28rem !important;
+}
+.van-dropdown-menu__title {
+    font-size: .28rem !important;
+}
+.van-nav-bar__title {
+    font-size: .32rem !important;
+}
+
+// 动画-start
+.animated {
+    animation-duration: 1.5s !important;
+    animation-fill-mode: both !important;
+}
+.animated02 {
+    animation-duration: 1s !important;
+    animation-fill-mode: both !important;
+}
+// 逐渐显示
+.toShow {
+    position: absolute;
+    animation: toShow 1.5s .5s;
+    animation-fill-mode: both !important;
+}
+// 放大效果
+.enlarge {
+    animation-name: enlarge;
+}
+// 从上到下进入
+.fadeInDown {
+    animation: fadeInDown 3s ease 1;
+}
+// 从下到上进入
+.fadeInUpLeft {
+    animation: fadeInUpLeft 1s ease 1;
+}
+.fadeIn {
+    animation: toShow 1s ease 1;
+}
+.fadeInRight1 {
+    animation: fadeInRight1 2s ease 1;
+}
+.fadeInRight2 {
+    animation: fadeInRight2 2s ease 1;
+}
+.fadeInRight3 {
+    animation: fadeInRight3 2s ease 1;
+}
+// 从左到右进入
+.fadeInLeft1 {
+    animation: fadeInLeft1 2s ease 1;
+}
+.fadeInLeft3 {
+    animation: fadeInLeft3 2s ease 1;
+}
+// 中心旋转
+.coreRotate {
+    animation-name: coreRotate;
+}
+@keyframes toShow {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+@keyframes enlarge {
+    from {
+        opacity: 0;
+        transform: scale(.1, .1);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+}
+// 从上到下
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: stranslate(0, -1000px);
+    }
+    to {
+        opacity: 1;
+        transform: stranslate(0, 10px);
+    }
+}
+// 从左下到右上
+@keyframes fadeInUpLeft {
+    0% {
+        transform: translate(0, 100px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+// 从右到左进入
+@keyframes fadeInRight1 {
+    0% {
+        transform: translate(1000px, 40vh);
+    }
+    50% {
+        transform: translate(0, 40vh);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+@keyframes fadeInRight2 {
+    0% {
+        opacity: 0;
+        transform: translate(1rem, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+@keyframes fadeInRight3 {
+    0% {
+        transform: translate(1000px, 25vh);
+    }
+    50% {
+        transform: translate(0, 25vh);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+// 从左到右进入
+@keyframes fadeInLeft1 {
+    0% {
+        transform: translate(-1000px, 40vh);
+    }
+    50% {
+        transform: translate(0, 40vh);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+@keyframes fadeInLeft3 {
+    0% {
+        transform: translate(-1000px, 25vh);
+    }
+    50% {
+        transform: translate(0, 25vh);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+// 绕中心旋转
+@keyframes coreRotate {
+    5% {
+        transform: rotate(5deg);
+    }
+    30% {
+        transform: rotate(-5deg);
+    }
+    60% {
+        transform: rotate(5deg);
+    }
+    90% {
+        transform: rotate(-5deg);
+    }
+}
+// loading
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.van-dropdown-menu__item--disabled {
+    .van-dropdown-menu__title::after {
+        border: none !important;
+    }
+}

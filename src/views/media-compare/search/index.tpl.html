@@ -1,0 +1,85 @@
+<div class="search">
+    <NavBar
+        rightText="搜索"
+        @NavClickLeft="navClickLeft"
+        @NavClickRight="navClickRight">
+        <div class="title" slot="title" style="color: #fff;">
+            <Search
+                clearable
+                left-icon=""
+                placeholder="请输入地址、楼盘名称"
+                style="width: 5.48rem;"
+                v-model="searchValue"
+                @search="onSearch" />
+        </div>
+    </NavBar>
+    <Overlay :show="isLoading" z-index=999>
+        <div class="wrapper">
+            <Loading size="24px" vertical >加载中...</Loading>
+        </div>
+    </Overlay>
+    <div class="search-content">
+        <div v-if="+renderState === 1" class="search-history">
+            <div class="title">
+                <Row type="flex" justify="space-between">
+                    <Col span="6" class="history">搜索历史</Col>
+                    <Col span="6" style="text-align: right;">
+                        <Icon
+                            name="delete"
+                            style="font-size: 22px;"
+                            color="#969799"
+                            @click="clearHistory" />
+                    </Col>
+                </Row>
+                <Row
+                    type="flex"
+                    class="tags"
+                    style="
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                    ">
+                    <!-- <Col class="tag"><Tag color="#f2f2f2" text-color="#666">威斯顿联邦大厦</Tag></Col>
+                    <Col class="tag"><Tag color="#f2f2f2" text-color="#666">新希望大厦</Tag></Col>
+                    <Col class="tag"><Tag color="#f2f2f2" text-color="#666">新希望大厦</Tag></Col>
+                    <Col class="tag"><Tag color="#f2f2f2" text-color="#666">新希望大厦</Tag></Col>
+                    <Col class="tag"><Tag color="#f2f2f2" text-color="#666">新希望大厦</Tag></Col>
+                    <Col class="tag"><Tag color="#f2f2f2" text-color="#666">新希望大厦</Tag></Col> -->
+                </Row>
+            </div>
+        </div>
+        <div v-if="+renderState === 2" class="search-result">
+            <Cell  v-for="(item, index) in searchList" :key="index" :icon="buildingSvg" :label="item.address" @click="toPage(item)">
+                <template #title>
+                    <Row type="flex" justify="space-between">
+                        <span class="custom-title">{{item.projectName}}</span>
+                        <Tag v-if="+item.type === 1" plain type="danger" style="display: inline-table;">新潮楼盘</Tag>
+                        <Tag v-if="+item.type === 2" plain color="#3f70e9" style="display: inline-table;">分众楼盘</Tag>
+                    </Row>
+                </template>
+            </Cell>
+            <Cell  v-for="(item, index) in adressList" :key="index" :icon="addressSvg" :label="item.address" @click="toMap(item)">
+                <template #title>
+                    <Row type="flex" justify="space-between">
+                        <span class="custom-title">{{item.name}}</span>
+                    </Row>
+                </template>
+            </Cell>
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心B座" label="天府大道北段28号" />
+            <Cell :icon="addressSvg" title="茂业中心A座" label="天府大道北段28号" />
+        </div>
+        <NoData v-if="+renderState === 0" />
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="nav-bar">
+    <NavBar
+        fixed
+        placeholder
+        left-text=""
+        right-text=""
+        :style="{ backgroundColor: bgColor }"
+        @click-left="onClickLeft"
+        @click-right="onClickRight">
+        <template #left>
+            <img src="../../assets/image/left-arrow.svg"/>
+        </template>
+        <template #title>
+            <slot name="title"></slot>
+        </template>
+        <template #right v-if="showRight">
+            <span :style="{'color': color}">{{rightText}}</span>
+        </template>
+    </NavBar>
+</div>

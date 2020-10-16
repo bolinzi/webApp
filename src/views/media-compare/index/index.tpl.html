@@ -1,0 +1,29 @@
+<div class="index">
+    <button class="skip" @click="info">跳过</button>
+    <!-- <Loading type="spinner" /> -->
+    <div
+        id="startup"
+        ref="startup">
+        <p v-show="scale" class="city-name" :class="scale?'fadeIn':''" >{{cityName}}</p>
+    </div>
+    <div class="ladder-media-quarter">
+        <p class="fadeInLeft1">
+            今日搜索到<span class="prominent">智能屏梯媒小区 {{dataInfo.premisesNum}}</span> 个
+        </p>
+        <p class="fadeInRight1">
+            新潮 <span class="prominent">{{dataInfo.xcNum}}</span> 个，分众 <span class="prominent">{{dataInfo.cmNum}}</span> 个
+        </p>
+    </div>
+    <div class="smart-screen" v-if="isScreen">
+        <p class="title fadeInRight2">智能屏</p>
+        <p class="content fadeInLeft3">
+            新潮，{{dataInfo.smartMap.xc.deviceNum | mumFormatOfTenThousand}}台{{dataInfo.smartMap.xc.deviceRate}}%，覆盖{{dataInfo.smartMap.xc.premisesNum | mumFormatOfComma}}个小区，{{dataInfo.smartMap.xc.elevatorNum | mumFormatOfComma}}部电梯
+        </p>
+        <p class="content fadeInRight3">
+            分众，{{dataInfo.smartMap.cm.deviceNum | mumFormatOfTenThousand}}台{{dataInfo.smartMap.cm.deviceRate}}%，覆盖{{dataInfo.smartMap.cm.premisesNum | mumFormatOfComma}}个小区，{{dataInfo.smartMap.cm.elevatorNum | mumFormatOfComma}}部电梯
+        </p>
+    </div>
+    <div v-if="isBtn" class="get-btn fadeInUpLeft">
+        <Button type="danger" class="get-into" @click="info">进入</Button>
+    </div>
+</div>

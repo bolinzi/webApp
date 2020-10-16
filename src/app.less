@@ -1,0 +1,31 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+#app {
+    width: 100%;
+    height: 100%;
+    font-size: .28rem;
+    font-family: -apple-system, BlinkMacSystemFont, PingFangSC, 'PingFangSC-Regular', 'Segoe UI', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: left;
+}
+.clearfix::after {
+    clear: both;
+    display: block;
+    content: '';
+}

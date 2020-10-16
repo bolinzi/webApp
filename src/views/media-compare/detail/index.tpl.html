@@ -1,0 +1,447 @@
+<div id="propertyDetails2020">
+    <NavBar
+        :showRight='false'
+        @NavClickLeft="navClickLeft"
+        ref='header'
+    >
+        <span slot="title" style='color: #fff;'>{{video.customerName || '楼盘详情'}}</span>
+    </NavBar>
+    <!-- 骨架屏 -->
+    <div v-if='!r' class="skeleton" >
+        <div class="banner-box">
+            <div class="swiper-container">
+            </div>
+        </div>
+        <div class="infos">
+            <h1 class="name"></h1>
+            <ul class="tags">
+                <li class="tag"></li>
+                <li class="tag"></li>
+                <li class="tag"></li>
+                <li class="tag"></li>
+            </ul>
+            <h4 class="address">
+            <!-- <img class='address-icon' :src="require(`../../../assets/image/xc-address-icon.svg`)" alt="" srcset=""> -->
+            </h4>
+        </div>
+        <div class="sk-box">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="sk-card">
+            <div class="sk-text"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+            <div class="sk-item"></div>
+        </div>
+    </div>
+    <!-- 主内容 -->
+    <div v-if="r" ref='container' class="container" :class='{"formMiniPrograms": formMiniPrograms}'>
+        <div class="banner-box">
+            <div class="swiper-container">
+                <!-- 判断是否有轮播图，没有就用默认的图片 -->
+                <Swipe class="swiper-wrapper" v-if="r.imageUrls.length" id="images" :autoplay="3000" loop>
+                    <SwipeItem class="swiper-slide" v-for="(item, i) in r.imageUrls" :key="i">
+                        <img :src="item" alt="" />
+                    </SwipeItem>
+                </Swipe>
+
+                <div class="swiper-wrapper" v-else>
+                    <div class="swiper-slide">
+                        <img :src="require('../../../assets/image/no-banner.png')" alt="" />
+                    </div>
+                </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <!-- 顶部楼盘信息 -->
+        <div class="infos">
+            <h1 class="name">{{r.name}}</h1>
+            <ul class="tags" :class="{'fz': pageType === 'fz'}">
+                <li class="tag" v-if="r.buildingNum">{{r.buildingNum}}栋楼</li>
+                <li class="tag" v-if="r.unitNum && !(pageType === 'fz')">
+                    {{r.unitNum}}个单元
+                </li>
+                <li class="tag" v-if="r.elevatorNum">{{r.elevatorNum}}部电梯</li>
+                <li class="tag" v-if="r.smartScreenNum">
+                    {{r.smartScreenNum}}个智能屏
+                </li>
+                <li class="tag" v-if="r.lcdNum">{{r.lcdNum}}个LCD</li>
+            </ul>
+            <h4 class="address" v-if="r.address">
+                <img class="address-icon" :src="require(`../../../assets/image/${pageType}-address-icon.svg`)" alt="" srcset="" />
+                地址：{{r.address}}
+            </h4>
+        </div>
+        <!-- 楼盘信息 -->
+        <div class="data-card details">
+            <h2 class="title" :class="{'fz': pageType === 'fz'}">楼盘信息</h2>
+            <div class="list">
+                <dl class="item">
+                    <dt>楼盘类型</dt>
+                    <dd>{{r.propertyType || '暂无资料'}}</dd>
+                </dl>
+
+                <dl class="item">
+                    <dt>平均售价</dt>
+                    <dd>{{r.avgSellPrice ? r.avgSellPrice + '元' : '暂无资料'}}</dd>
+                </dl>
+                <dl class="item">
+                    <dt>开发商</dt>
+                    <dd>{{r.developer || '暂无资料'}}</dd>
+                </dl>
+                <dl class="item">
+                    <dt>物业费</dt>
+                    <dd>
+                        {{r.propertyCosts ? r.propertyCosts + '元/㎡/月' : '暂无资料'}}
+                    </dd>
+                </dl>
+                <dl class="item">
+                    <dt>楼龄</dt>
+                    <dd>{{r.buildAge ? r.buildAge + '年' : '暂无资料'}}</dd>
+                </dl>
+                <dl class="item" v-if="!(pageType === 'fz')">
+                    <dt>最高楼层</dt>
+                    <dd>{{r.floorNum ? r.floorNum + '层' : '暂无资料'}}</dd>
+                </dl>
+                <dl class="item">
+                    <dt>覆盖人数</dt>
+                    <dd>{{r.coverCrowd ? r.coverCrowd + '人' : '暂无资料'}}</dd>
+                </dl>
+                <dl class="item" v-if="!(pageType === 'fz')">
+                    <dt>入住率</dt>
+                    <dd>
+                        {{r.occupancyRate ? r.occupancyRate * 100 + '%' : '暂无资料'}}
+                    </dd>
+                </dl>
+                <dl class="item">
+                    <dt>覆盖家庭</dt>
+                    <dd>{{r.coverFamily ? r.coverFamily + '个' : '暂无资料'}}</dd>
+                </dl>
+            </div>
+        </div>
+        <!-- 搜索指数 -->
+        <div class="data-card search-data" v-if="computedData('search').length">
+            <h2 class="title">搜索指数</h2>
+            <ul class="list">
+                <li class="item" v-for="(item, idx) in computedData('search')">
+                    <span class="name">
+                        <span v-if="idx === 0" class="ranking first">{{idx+1}}</span>
+                        <span v-if="idx === 1" class="ranking second">{{idx+1}}</span>
+                        <span v-if="idx === 2" class="ranking third">{{idx+1}}</span>
+                        <span v-if="idx > 2" class="ranking other">{{idx+1}}</span>
+                        <span class="shenluehao">
+                            {{item.name.length > 6 ? item.name.substr(0, 6) + '...' :
+              item.name }}
+                        </span>
+                    </span>
+                    <div class="process-bar">
+                        <div v-if="idx === 0" class="inner first" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'">
+                        </div>
+                        <div v-if="idx === 1" class="inner second"
+                            :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                        <div v-if="idx === 2" class="inner third" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'">
+                        </div>
+                        <div v-if="idx > 2" class="inner" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                    </div>
+                    <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                </li>
+            </ul>
+        </div>
+        <!-- 购买指数 -->
+        <div class="data-card buy-data" v-if="computedData('purchase').length">
+            <h2 class="title">购买指数</h2>
+            <ul class="list">
+                <li class="item" v-for="(item, idx) in computedData('purchase')">
+                    <span class="name">
+                        <span v-if="idx === 0" class="ranking first">{{idx+1}}</span>
+                        <span v-if="idx === 1" class="ranking second">{{idx+1}}</span>
+                        <span v-if="idx === 2" class="ranking third">{{idx+1}}</span>
+                        <span v-if="idx > 2" class="ranking other">{{idx+1}}</span>
+                        <span class="shenluehao">
+                            {{item.name.length > 6 ? item.name.substr(0, 6) + '...' :
+              item.name }}
+                        </span>
+                    </span>
+                    <div class="process-bar">
+                        <div v-if="idx === 0" class="inner first" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'">
+                        </div>
+                        <div v-if="idx === 1" class="inner second"
+                            :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                        <div v-if="idx === 2" class="inner third" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'">
+                        </div>
+                        <div v-if="idx > 2" class="inner" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                    </div>
+                    <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                </li>
+            </ul>
+        </div>
+        <!-- 线上关注指数 -->
+        <div class="data-card online-focus-data" v-if="computedData('concern').length">
+            <h2 class="title">线上关注指数</h2>
+            <ul class="list">
+                <li class="item" v-for="(item, idx) in computedData('concern')">
+                    <span class="name">
+                        <span v-if="idx === 0" class="ranking first">{{idx+1}}</span>
+                        <span v-if="idx === 1" class="ranking second">{{idx+1}}</span>
+                        <span v-if="idx === 2" class="ranking third">{{idx+1}}</span>
+                        <span v-if="idx > 2" class="ranking other">{{idx+1}}</span>
+                        <span class="shenluehao">
+                            {{item.name.length > 6 ? item.name.substr(0, 6) + '...' :
+              item.name }}
+                        </span>
+                    </span>
+                    <div class="process-bar">
+                        <div v-if="idx === 0" class="inner first" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'">
+                        </div>
+                        <div v-if="idx === 1" class="inner second"
+                            :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                        <div v-if="idx === 2" class="inner third" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'">
+                        </div>
+                        <div v-if="idx > 2" class="inner" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                    </div>
+                    <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                </li>
+            </ul>
+        </div>
+        <!-- 性别分布 -->
+        <div class="data-card sex-data" v-if="computedData('genderRatio').length">
+            <h2 class="title">性别分布</h2>
+            <ul class="list">
+                <li class="item" v-for="(item, idx) in computedData('genderRatio')">
+                    <span class="name">
+                        <img v-if="item.tag === 19398" :src="require('../../../assets/image/man.svg')" alt="" class="sex-icon" />
+                        <img v-if="item.tag === 22253" :src="require('../../../assets/image/woman.svg')" alt="" class="sex-icon" />
+                        <span class="shenluehao">
+                            {{item.name.length > 6 ? item.name.substr(0, 6) + '...' :
+              item.name }}性
+                        </span>
+                    </span>
+                    <div class="process-bar">
+                        <div v-if="item.tag === 19398" class="inner man"
+                            :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                        <div v-if="item.tag === 22253" class="inner woman"
+                            :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                    </div>
+                    <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                </li>
+            </ul>
+        </div>
+        <!-- 年龄分布 -->
+        <div class="data-card age-data" v-if="computedData('generation').length">
+            <h2 class="title">年龄分布</h2>
+            <ul class="list">
+                <li class="item" v-for="(item, idx) in computedData('generation')">
+                    <span class="name">
+                        <span class="shenluehao">
+                            {{item.name.length > 6 ? item.name.substr(0, 6) + '...' :
+              item.name }}
+                        </span>
+                    </span>
+                    <div class="process-bar">
+                        <div class="inner" :style="'width: ' + (item.val * 100).toFixed(2)+ '%'"></div>
+                    </div>
+                    <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                </li>
+            </ul>
+        </div>
+        <!-- 学历分布 -->
+        <div class="data-card education-data" v-if="computedData('education').length">
+            <h2 class="title">学历分布</h2>
+            <div class="row">
+                <div id="eduChart"
+                    style="
+                        width: 2rem;
+                        height: 2rem;
+                    "></div>
+                <ul class="edu-info">
+                    <li class="item" v-for="(item, idx) in computedData('education')">
+                        <i class="circle" :style="`background: ${color[idx]};`"></i>
+                        <span class="shenluehao">
+                            <span class="label">{{item.name.length > 6 ? item.name.substr(0, 6) + '...' :
+                item.name }}</span>
+                        </span>
+                        <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 消费能力 -->
+        <div class="data-card consumption-data" v-if="computedData('consumption').length">
+            <h2 class="title">消费能力</h2>
+            <div class="row">
+                <div id="consumptionChart" style="
+                    width: 2rem;
+                    height: 2rem;
+                ">
+                </div>
+                <ul class="edu-info">
+                    <li class="item" v-for="(item, idx) in computedData('consumption')">
+                        <i class="circle" :style="`background: ${color[idx]};`"></i>
+                        <span class="shenluehao">
+                            <span class="label">{{item.name.length > 6 ? item.name.substr(0, 6) + '...' :
+                item.name }}</span>
+                        </span>
+                        <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 车产状况 -->
+        <div class="data-card produce-data" v-if="computedData('carstation').length">
+            <h2 class="title">车产状况</h2>
+            <ul class="row">
+                <li class="col" v-for="(item, idx) in computedData('carstation')">
+                    <img v-if="item.tag === 181739" :src="require('../../../assets/image/car.png')" alt="" class="car" />
+                    <img v-if="item.tag === 209914" :src="require('../../../assets/image/nocar.png')" alt="" class="car" />
+                    <span class="label">{{item.name}}</span>
+                    <span class="percent">{{(item.val * 100).toFixed(2)}}%</span>
+                </li>
+            </ul>
+        </div>
+        <!-- Top投放行业（近6个月） -->
+        <div class="data-card search-data" v-if="launchRankList.length">
+            <h2 class="title">Top投放行业（近6个月）</h2>
+            <ul class="list">
+                <li class="item" v-for="(item, idx) in launchRankList.slice(0, 10)">
+                    <span class="name">
+                        <span v-if="idx === 0" class="ranking first">{{idx+1}}</span>
+                        <span v-if="idx === 1" class="ranking second">{{idx+1}}</span>
+                        <span v-if="idx === 2" class="ranking third">{{idx+1}}</span>
+                        <span v-if="idx > 2" class="ranking other">{{idx+1}}</span>
+                        <span class="shenluehao">
+                            {{item.tradeName.trim().length > 6 ? item.tradeName.substr(0, 6) + '...' : item.tradeName.trim() }}
+                        </span>
+                    </span>
+                    <div class="process-bar">
+                        <div v-if="idx === 0" class="inner first"
+                            :style="'width: ' + (item.rate * 100).toFixed(2)+ '%'"></div>
+                        <div v-if="idx === 1" class="inner second"
+                            :style="'width: ' + (item.rate * 100).toFixed(2)+ '%'"></div>
+                        <div v-if="idx === 2" class="inner third"
+                            :style="'width: ' + (item.rate * 100).toFixed(2)+ '%'"></div>
+                        <div v-if="idx > 2" class="inner" :style="'width: ' + (item.rate * 100).toFixed(2)+ '%'"></div>
+                    </div>
+                    <span class="percent">{{(item.rate * 100).toFixed(2)}}%</span>
+                </li>
+            </ul>
+        </div>
+        <!-- 客户投放案例（近3个月） -->
+        <div class="data-card case-data" :class="{'fixed-card': fixedCaseData}" v-if="launchRankList.length">
+            <h2 class="title">客户投放案例（近3个月）</h2>
+            <div class="offset" ref="caseData" id="caseData" :class="{'fixed': fixedCaseData}">
+                <div class="tabs">
+                    <div class="tab-container tab1">
+                        <div class="tab-wrapper">
+                            <div class="tab-slide" :class="{'selected': i === tradeActiveIdx}"
+                                v-for="(item, i) in launchRankList" :key="i" @click="choseTradeCode(item, i)">
+                                {{item.tradeName.trim()}}<span class="line"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="more-btn" @click="caseCategoryVisble = true">
+                        <img :src="require('../../../assets/image/screen.svg')" alt="" srcset="" />
+                    </div>
+                </div>
+            </div>
+            <div class="offset hidevisible" :class="{'fixed-show': fixedCaseData}">
+                <div class="tabs">
+                    <div class="tab-container tab1">
+                        <div class="tab-wrapper">
+                            <div class="tab-slide" :class="{'selected': i === tradeActiveIdx}"
+                                v-for="(item, i) in launchRankList" :key="i" @click="choseTradeCode(item, i)">
+                                {{item.tradeName.trim()}}<span class="line"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="more-btn" @click="caseCategoryVisble = true">
+                        <img :src="require('../../../assets/image/screen.svg')" alt="" srcset="" />
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <ul class="case-list">
+                    <li class="case-item" v-for="(item, i) in caseList" :key="i" @click="handleCase(item)">
+                        <!-- 设备类型(1:梯内、2梯外） -->
+                        <div class="case-img-wrap" v-if="item.deviceType === 1">
+                            <img class="case-img" :src="item.coverImgUrl || require('../../../assets/image/case-default.png')"
+                                alt="" />
+                            <img class="case-bottom-img"
+                                :src="item.bottomImgUrl || require('../../../assets/image/case-default-1.png')" alt="" />
+                        </div>
+                        <div class="case-img-wrap2" v-if="item.deviceType === 2">
+                            <img class="case-img2"
+                                :src="item.coverImgUrl || require('../../../assets/image/case-default-1.png')" alt="" />
+                            <div class="case-bottom-img-wrap">
+                                <div class="case-bottom1-img">
+                                    <img :src="item.bottom1ImgUrl || require('../../../assets/image/case-default-2.png')" alt="" />
+                                </div>
+                                <div class="case-bottom1-img case-bottom2-img">
+                                    <img :src="item.bottom2ImgUrl || require('../../../assets/image/case-default-2.png')" alt="" />
+                                </div>
+                            </div>
+                        </div>
+                        <span class="case-name">{{item.customerName}}</span>
+                    </li>
+                </ul>
+                <p class="loadmore" @click="getTopLaunchAndCase">
+                    {{caseLoading ? '加载中...' : noMoreCase ? '没有更多了' : '点击加载更多 >'}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <NoData v-if='noData' style="margin-top: 100px;"></NoData>
+    <!-- 弹窗 -->
+    <!-- 案例分类选择弹窗 -->
+    <div id="caseCategory" class="modal" v-show="caseCategoryVisble">
+        <div class="modal-bg" @click="caseCategoryVisble = false"></div>
+        <div class="modal-content" :style="`height: ${getModalHeight}`">
+            <div class="modal-head">
+                <h5>所有行业</h5>
+                <img class="close-btn" :src="require('../../../assets/image/close.svg')" @click="caseCategoryVisble = false" />
+            </div>
+            <div class="modal-body">
+                <ul class="category-list">
+                    <li class="category-item" :class="{'active': i === tradeActiveIdx}"
+                        v-for="(item, i) in launchRankList" :key="i" @click="choseTradeCode(item, i)">
+                        {{item.tradeName.trim()}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 视频 -->
+    <div id="videoPlay" class="modal" v-if='videoPlayVisble'>
+        <div class="modal-bg" @click='closeVideo'></div>
+        <div class="modal-content">
+            <div class="modal-body">
+                <img class='close-btn' :src="require('../../../assets/image/close.svg')" @click='closeVideo'>
+                <video
+                    id="videoJS"
+                    class="video vjs-fluid video-js vjs-big-play-centered"
+                    preload="auto"
+                    webkit-playsinline
+                    playsinline
+                    x5-playsinline
+                    :poster="require('../../../assets/image/video-default.png')">
+                    <source :src="video.viewUrl">
+                </video>
+            </div>
+        </div>
+    </div>
+</div>

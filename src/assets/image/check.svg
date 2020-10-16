@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>多选</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="竞媒比对-筛选行政区域" transform="translate(-333.000000, -286.000000)">
+            <g id="分组-7" transform="translate(0.000000, 140.000000)">
+                <g id="编组" transform="translate(333.000000, 146.000000)">
+                    <g id="多选">
+                        <circle id="椭圆形" stroke="#EE4844" cx="10" cy="10" r="9.5"></circle>
+                        <polyline id="路径" stroke="#EB4944" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="5 10.434661 8.72267387 14 15 7"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
